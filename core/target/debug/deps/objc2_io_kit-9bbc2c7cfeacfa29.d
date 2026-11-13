@@ -1,0 +1,8 @@
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/debug/deps/objc2_io_kit-9bbc2c7cfeacfa29.d: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/consumes_argument.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/mod.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/macros.rs
+
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/debug/deps/libobjc2_io_kit-9bbc2c7cfeacfa29.rmeta: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/consumes_argument.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/mod.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/macros.rs
+
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/lib.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/consumes_argument.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/generated/mod.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/objc2-io-kit-0.3.2/src/macros.rs:

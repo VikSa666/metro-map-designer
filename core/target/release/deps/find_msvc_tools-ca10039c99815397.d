@@ -1,0 +1,9 @@
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/release/deps/find_msvc_tools-ca10039c99815397.d: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/find_tools.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/tool.rs
+
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/release/deps/libfind_msvc_tools-ca10039c99815397.rlib: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/find_tools.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/tool.rs
+
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/release/deps/libfind_msvc_tools-ca10039c99815397.rmeta: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/find_tools.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/tool.rs
+
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/lib.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/find_tools.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/find-msvc-tools-0.1.15/src/tool.rs:

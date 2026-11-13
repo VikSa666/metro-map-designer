@@ -1,0 +1,10 @@
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/debug/deps/which-d1155a5af56c1250.d: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/checker.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/error.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/finder.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/helper.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/sys.rs
+
+/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/debug/deps/libwhich-d1155a5af56c1250.rmeta: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/checker.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/error.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/finder.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/helper.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/sys.rs
+
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/lib.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/checker.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/error.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/finder.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/helper.rs:
+/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/which-8.0.6/src/sys.rs:

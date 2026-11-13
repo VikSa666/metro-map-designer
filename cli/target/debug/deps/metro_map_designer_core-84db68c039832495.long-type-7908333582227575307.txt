@@ -1,0 +1,1 @@
+MapWhile<std::slice::Iter<'_, &str>, {closure@/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/src/application/lines.rs:46:24: 46:59}>

@@ -1,0 +1,9 @@
+{
+  "name": "metro-map-designer",
+  "version": "1.0.0",
+  "description": "A metro map designer",
+  "private": true,
+  "scripts": {
+    "build:core": "wasm-pack build --target web --out-dir ../metro-map-designer-core ./core"
+  }
+}
