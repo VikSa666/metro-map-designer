@@ -1,3 +1,4 @@
 {
-    "workbench.preferredDarkColorTheme": "Dark Modern"
+    "workbench.preferredDarkColorTheme": "Dark Modern",
+    "editor.formatOnSave": true,
 }
