@@ -1,36 +1,48 @@
 {
   "id": "testMap",
-  "stations": [
+  "nodes": [
     {
-      "id": "station-1",
-      "name": "Central",
-      "svg_coordinates": {
-        "x": 100,
-        "y": 100
+      "id": "node-1",
+      "Station": {
+        "id": "station-1",
+        "name": "Central",
+        "svg_coordinates": {
+          "x": 100,
+          "y": 100
+        }
       }
     },
     {
-      "id": "station-2",
-      "name": "Museum",
-      "svg_coordinates": {
-        "x": 200,
-        "y": 200
+      "id": "node-2",
+      "Station": {
+        "id": "station-2",
+        "name": "Museum",
+        "svg_coordinates": {
+          "x": 200,
+          "y": 200
+        }
       }
     },
     {
       "id": "station-3",
-      "name": "Riverside",
-      "svg_coordinates": {
-        "x": 300,
-        "y": 300
+      "Station": {
+        "id": "station-3",
+        "name": "Riverside",
+        "svg_coordinates": {
+          "x": 300,
+          "y": 300
+        }
       }
     },
     {
       "id": "station-4",
-      "name": "Airport",
-      "svg_coordinates": {
-        "x": 400,
-        "y": 400
+      "Station": {
+        "id": "station-4",
+        "name": "Airport",
+        "svg_coordinates": {
+          "x": 400,
+          "y": 400
+        }
       }
     }
   ],
@@ -42,7 +54,11 @@
       "routes": [
         {
           "id": "route-1",
-          "tracks": ["track-1", "track-2", "track-3"]
+          "tracks": [
+            "track-1",
+            "track-2",
+            "track-3"
+          ]
         }
       ]
     }
