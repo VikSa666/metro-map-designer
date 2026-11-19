@@ -1,5 +1,21 @@
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
-    Blocking waiting for file lock on package cache
-    Checking metro-map-designer-core v0.1.0 (/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.88s
+    Checking serde_core v1.0.229
+    Checking unicode-ident v1.0.27
+    Checking wasm-bindgen-shared v0.2.130
+    Checking zmij v1.0.23
+    Checking memchr v2.8.3
+    Checking itoa v1.0.19
+    Checking cfg-if v1.0.5
+    Checking wasm-bindgen v0.2.130
+    Checking serde_json v1.0.154
+    Checking serde v1.0.229
+    Checking metro-map-designer-core v0.1.0 (/workspaces/metro-map-designer/core)
+warning: unused dependency `wasm-bindgen`
+  --> Cargo.toml:10:1
+   |
+10 | wasm-bindgen = "0.2"
+   | ^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `cargo::unused_dependencies` is set to `warn` by default
+help: consider removing the dependency on `wasm-bindgen`
+warning: `metro-map-designer-core` (manifest) generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.25s

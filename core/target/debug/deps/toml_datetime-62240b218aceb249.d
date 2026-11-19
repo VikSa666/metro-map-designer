@@ -1,8 +1,0 @@
-/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/debug/deps/toml_datetime-62240b218aceb249.d: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/datetime.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/de.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/ser.rs
-
-/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/debug/deps/libtoml_datetime-62240b218aceb249.rmeta: /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/lib.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/datetime.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/de.rs /Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/ser.rs
-
-/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/lib.rs:
-/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/datetime.rs:
-/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/de.rs:
-/Users/victorsantiagoblanco/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/toml_datetime-1.1.3+spec-1.1.0/src/ser.rs:
