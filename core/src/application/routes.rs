@@ -1,9 +1,9 @@
 use std::collections::{BTreeSet, HashMap};
 
 use crate::{
-    domain::{LineId, Route, StationId, Track, TrackId},
-    errors::CustomError,
     MetroMap,
+    domain::{LineId, NetworkNodeId, Route, Track, TrackId},
+    errors::CustomError,
 };
 
 impl MetroMap {
@@ -104,7 +104,7 @@ impl MetroMap {
     /// - Repeated tracks
     /// - Nonexisting tracks in the `map`.
     fn connect_tracks(&self, track_ids: &[&str]) -> Result<BTreeSet<TrackId>, CustomError> {
-        let mut next: HashMap<&StationId, &Track> = HashMap::new();
+        let mut next: HashMap<&NetworkNodeId, &Track> = HashMap::new();
         for track_id in track_ids.into_iter().map(|id| TrackId::from(*id)) {
             let Some(track) = self.get_track(&track_id) else {
                 return Err(CustomError::TrackIdNotFound {

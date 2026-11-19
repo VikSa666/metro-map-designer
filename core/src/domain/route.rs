@@ -1,12 +1,10 @@
-use std::collections::{BTreeSet, HashSet};
-
-use crate::{domain::Track, errors::CustomError, infrastructure::RouteDto};
+use std::collections::BTreeSet;
 
 use super::TrackId;
 
 /// Representing a route for a specific line. Some metros have different
 /// routes in the same line (e.g., London Metro)
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Route {
     id: String,
     name: Option<String>,
@@ -28,33 +26,5 @@ impl Route {
 
     pub fn tracks_mut(&mut self) -> &mut BTreeSet<TrackId> {
         &mut self.tracks
-    }
-}
-
-impl From<Route> for RouteDto {
-    fn from(route: Route) -> Self {
-        Self {
-            id: route.id,
-            name: route.name,
-            tracks: route
-                .tracks
-                .into_iter()
-                .map(|t| t.to_string())
-                .collect::<Vec<String>>(),
-        }
-    }
-}
-
-impl From<RouteDto> for Route {
-    fn from(route: RouteDto) -> Self {
-        Self {
-            id: route.id,
-            name: route.name,
-            tracks: route
-                .tracks
-                .into_iter()
-                .map(|track_id| TrackId::from(track_id.as_str()))
-                .collect(),
-        }
     }
 }

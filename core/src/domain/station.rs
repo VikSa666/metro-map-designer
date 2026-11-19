@@ -1,12 +1,12 @@
-use crate::infrastructure::StationDto;
+use crate::domain::Id;
 
 use super::SvgPoint;
 
-#[derive(PartialEq, Eq, Hash, Debug, Clone)]
+#[derive(PartialEq, Eq, Hash, Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct StationId(String);
 
-impl StationId {
-    pub fn new(id: &str) -> Self {
+impl Id<'_> for StationId {
+    fn new(id: &str) -> Self {
         let normalized_id = if id.starts_with("station-") {
             id.to_string()
         } else {
@@ -35,10 +35,11 @@ impl std::fmt::Display for StationId {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Station {
     id: StationId,
     name: String,
+    // TODO: move to node
     svg_coordinates: SvgPoint,
     label_svg_coordinates: Option<SvgPoint>,
 }
@@ -60,27 +61,5 @@ impl Station {
 
     pub fn id(&self) -> &StationId {
         &self.id
-    }
-}
-
-impl From<Station> for StationDto {
-    fn from(station: crate::domain::Station) -> Self {
-        Self {
-            id: station.id.to_string(),
-            name: station.name,
-            svg_coordinates: station.svg_coordinates.into(),
-            label_svg_coordinates: station.label_svg_coordinates.map(Into::into),
-        }
-    }
-}
-
-impl From<StationDto> for crate::domain::Station {
-    fn from(station: StationDto) -> Self {
-        Self {
-            id: station.id.into(),
-            name: station.name,
-            svg_coordinates: station.svg_coordinates.into(),
-            label_svg_coordinates: station.label_svg_coordinates.map(Into::into),
-        }
     }
 }

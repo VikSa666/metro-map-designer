@@ -1,5 +1,5 @@
 use crate::{
-    domain::{MetroMap, StationId, SvgPoint, Track},
+    domain::{MetroMap, NetworkNodeId, Track},
     errors::CustomError,
 };
 
@@ -7,25 +7,24 @@ impl MetroMap {
     pub fn create_track(
         self: &mut MetroMap,
         id: &str,
-        origin_station: &str,
-        destination_station: &str,
-        edges: Vec<SvgPoint>,
+        origin: &str,
+        destination: &str,
     ) -> Result<(), CustomError> {
-        let origin_station_id = StationId::from(origin_station);
-        if !self.station_exists(&origin_station_id) {
-            return Err(CustomError::StationIdNotFound {
-                id: origin_station.to_string(),
+        let origin_node_id = NetworkNodeId::from(origin);
+        if !self.node_exists(&origin_node_id) {
+            return Err(CustomError::NodeIdNotFound {
+                id: origin.to_string(),
             });
         }
 
-        let destination_station_id = StationId::from(destination_station);
-        if !self.station_exists(&destination_station_id) {
-            return Err(CustomError::StationIdNotFound {
-                id: destination_station.to_string(),
+        let destination_node_id = NetworkNodeId::from(destination);
+        if !self.node_exists(&destination_node_id) {
+            return Err(CustomError::NodeIdNotFound {
+                id: destination.to_string(),
             });
         }
 
-        let track = Track::new(id, origin_station_id, destination_station_id, edges);
+        let track = Track::new(id, origin_node_id, destination_node_id);
         if !self.track_exists(track.id()) {
             self.push_track(track);
         }

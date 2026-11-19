@@ -1,5 +1,6 @@
 pub enum CustomError {
     StationIdNotFound { id: String },
+    NodeIdNotFound { id: String },
     TrackIdNotFound { id: String },
     LineIdNotFound { id: String },
     RouteIdNotFound { line_id: String, route_id: String },
@@ -13,6 +14,9 @@ impl std::fmt::Display for CustomError {
         match self {
             CustomError::StationIdNotFound { id } => {
                 write!(f, "Station with id `{id}` not found in current map.")
+            }
+            CustomError::NodeIdNotFound { id } => {
+                write!(f, "Node with id `{id}` not found in current map.")
             }
             CustomError::TrackIdNotFound { id } => {
                 write!(f, "Track with id `{id}` not found in current map.")

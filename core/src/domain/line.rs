@@ -1,12 +1,12 @@
-use crate::infrastructure::LineDto;
+use crate::domain::Id;
 
 use super::Route;
 
-#[derive(PartialEq, Debug, Clone)]
+#[derive(PartialEq, Debug, Eq, Hash, Clone, serde::Serialize, serde::Deserialize)]
 pub struct LineId(String);
 
-impl LineId {
-    pub fn new(id: &str) -> Self {
+impl Id<'_> for LineId {
+    fn new(id: &str) -> Self {
         let normalized_id = if id.starts_with("line-") {
             id.to_string()
         } else {
@@ -36,7 +36,7 @@ impl std::fmt::Display for LineId {
 }
 
 // TODO! Implement different color formats
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct LineColor(String);
 
 impl LineColor {
@@ -63,7 +63,7 @@ impl std::fmt::Display for LineColor {
     }
 }
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Line {
     id: LineId,
     name: String,
@@ -91,27 +91,5 @@ impl Line {
 
     pub fn routes_mut(&mut self) -> &mut Vec<Route> {
         &mut self.routes
-    }
-}
-
-impl From<Line> for LineDto {
-    fn from(line: Line) -> Self {
-        Self {
-            id: line.id.to_string(),
-            name: line.name,
-            color: line.color.to_string(),
-            routes: line.routes.into_iter().map(Into::into).collect(),
-        }
-    }
-}
-
-impl From<LineDto> for Line {
-    fn from(line: LineDto) -> Self {
-        Self {
-            id: line.id.into(),
-            name: line.name,
-            color: line.color.into(),
-            routes: line.routes.into_iter().map(Into::into).collect(),
-        }
     }
 }

@@ -6,22 +6,24 @@ mod station;
 pub use station::*;
 mod track;
 pub use track::*;
+mod node;
+pub use node::*;
+mod id;
+pub use id::*;
 
-use crate::infrastructure::{MetroMapDto, SvgPointDto};
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct MetroMap {
     id: String,
-    stations: Vec<Station>,
+    nodes: Vec<NetworkNode>,
     lines: Vec<Line>,
     tracks: Vec<Track>,
 }
 
 impl MetroMap {
-    pub fn new(id: &str, stations: Vec<Station>, lines: Vec<Line>, tracks: Vec<Track>) -> Self {
+    pub fn new(id: &str, nodes: Vec<NetworkNode>, lines: Vec<Line>, tracks: Vec<Track>) -> Self {
         Self {
             id: id.to_string(),
-            stations,
+            nodes,
             lines,
             tracks,
         }
@@ -30,14 +32,25 @@ impl MetroMap {
     pub fn new_empty(id: &str) -> Self {
         Self {
             id: id.to_string(),
-            stations: vec![],
+            nodes: vec![],
             lines: vec![],
             tracks: vec![],
         }
     }
 
-    pub fn stations(&self) -> &Vec<Station> {
-        &self.stations
+    pub fn nodes(&self) -> &Vec<NetworkNode> {
+        &self.nodes
+    }
+
+    pub fn node_exists(&self, node_id: &NetworkNodeId) -> bool {
+        self.nodes().iter().any(|node| node.id() == node_id)
+    }
+
+    pub fn stations(&self) -> Vec<&Station> {
+        self.nodes
+            .iter()
+            .filter_map(|node| node.station())
+            .collect::<Vec<&Station>>()
     }
 
     pub fn station_exists(&self, station_id: &StationId) -> bool {
@@ -110,7 +123,7 @@ impl MetroMap {
     }
 
     pub fn push_station(&mut self, station: Station) {
-        self.stations.push(station)
+        self.nodes.push(station.into())
     }
 
     pub fn push_line(&mut self, line: Line) {
@@ -122,36 +135,7 @@ impl MetroMap {
     }
 }
 
-impl From<MetroMap> for MetroMapDto {
-    fn from(value: MetroMap) -> Self {
-        Self {
-            id: value.id,
-            stations: value
-                .stations
-                .into_iter()
-                .map(Into::into)
-                .collect::<Vec<_>>(),
-            lines: value.lines.into_iter().map(Into::into).collect::<Vec<_>>(),
-            tracks: value.tracks.into_iter().map(Into::into).collect::<Vec<_>>(),
-        }
-    }
-}
-
-impl Into<MetroMap> for MetroMapDto {
-    fn into(self) -> MetroMap {
-        MetroMap::new(
-            self.id.as_str(),
-            self.stations
-                .into_iter()
-                .map(Into::into)
-                .collect::<Vec<_>>(),
-            self.lines.into_iter().map(Into::into).collect::<Vec<_>>(),
-            self.tracks.into_iter().map(Into::into).collect::<Vec<_>>(),
-        )
-    }
-}
-
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct SvgPoint {
     x: f32,
     y: f32,
@@ -168,24 +152,6 @@ impl From<(f32, f32)> for SvgPoint {
         Self {
             x: value.0,
             y: value.1,
-        }
-    }
-}
-
-impl From<SvgPoint> for SvgPointDto {
-    fn from(point: SvgPoint) -> Self {
-        Self {
-            x: point.x,
-            y: point.y,
-        }
-    }
-}
-
-impl From<SvgPointDto> for SvgPoint {
-    fn from(point: SvgPointDto) -> Self {
-        Self {
-            x: point.x,
-            y: point.y,
         }
     }
 }
