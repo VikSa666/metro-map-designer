@@ -1,1 +1,0 @@
-/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/target/wasm32-unknown-unknown/release/libmetro_map_designer_core.rlib: /Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/src/lib.rs

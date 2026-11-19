@@ -1,1 +1,0 @@
-std::iter::Map<std::vec::IntoIter<String>, {closure@/Users/victorsantiagoblanco/Víctor/Estudis/Programming/metro-map-designer/core/src/domain/route.rs:39:50: 39:53}>
