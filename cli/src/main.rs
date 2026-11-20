@@ -136,13 +136,13 @@ fn main() -> io::Result<()> {
 fn add_station(metro_map: &mut MetroMap, name: &str, svg_x: &str, svg_y: &str) -> io::Result<()> {
     let x = str::parse::<f32>(svg_x).map_err(|err| io::Error::other(err))?;
     let y = str::parse::<f32>(svg_y).map_err(|err| io::Error::other(err))?;
-    metro_map.create_station(name, name, SvgPoint::from((x, y)), None)?;
+    metro_map.create_station(name, SvgPoint::from((x, y)), None)?;
     println!("Successfully created station '{name}'.");
     Ok(())
 }
 
 fn add_track(metro_map: &mut MetroMap, id: &str, from: &str, to: &str) -> io::Result<()> {
-    metro_map.create_track(id, from, to)?;
+    metro_map.create_track(id, from, to, vec![])?;
     println!("Successfully created track with id '{id}' from station '{from}' to station '{to}'");
     Ok(())
 }
@@ -205,9 +205,9 @@ fn see_stations(metro_map: &MetroMap, name_only: bool) {
     println!("#### Metro Stations ####");
     if name_only {
         let stations = metro_map
-            .nodes()
+            .stations()
             .iter()
-            .map(|l| l.id().to_string())
+            .map(|s| s.name().to_string())
             .collect::<Vec<String>>();
         println!("{stations:#?}")
     } else {

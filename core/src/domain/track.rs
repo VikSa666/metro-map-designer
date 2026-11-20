@@ -1,4 +1,4 @@
-use crate::domain::Id;
+use crate::SvgPoint;
 
 use super::NetworkNodeId;
 
@@ -7,7 +7,7 @@ use super::NetworkNodeId;
 )]
 pub struct TrackId(String);
 
-impl Id<'_> for TrackId {
+impl TrackId {
     fn new(id: &str) -> Self {
         let normalized_id = if id.starts_with("track-") {
             id.to_string()
@@ -43,14 +43,21 @@ pub struct Track {
     id: TrackId,
     origin: NetworkNodeId,
     destination: NetworkNodeId,
+    geometry: Vec<SvgPoint>,
 }
 
 impl Track {
-    pub fn new(id: &str, origin: NetworkNodeId, destination: NetworkNodeId) -> Self {
+    pub fn new(
+        id: &str,
+        origin: NetworkNodeId,
+        destination: NetworkNodeId,
+        geometry: Vec<SvgPoint>,
+    ) -> Self {
         Self {
             id: TrackId::new(id),
             origin,
             destination,
+            geometry,
         }
     }
 

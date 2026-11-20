@@ -8,8 +8,6 @@ mod track;
 pub use track::*;
 mod node;
 pub use node::*;
-mod id;
-pub use id::*;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct MetroMap {
@@ -51,12 +49,6 @@ impl MetroMap {
             .iter()
             .filter_map(|node| node.station())
             .collect::<Vec<&Station>>()
-    }
-
-    pub fn station_exists(&self, station_id: &StationId) -> bool {
-        self.stations()
-            .iter()
-            .any(|station| station.id() == station_id)
     }
 
     pub fn lines(&self) -> &Vec<Line> {
@@ -123,7 +115,8 @@ impl MetroMap {
     }
 
     pub fn push_station(&mut self, station: Station) {
-        self.nodes.push(station.into())
+        let node = NetworkNode::new(Node::Station(station));
+        self.nodes.push(node)
     }
 
     pub fn push_line(&mut self, line: Line) {

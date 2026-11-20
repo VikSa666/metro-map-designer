@@ -1,11 +1,9 @@
-use crate::domain::Id;
-
 use super::Route;
 
 #[derive(PartialEq, Debug, Eq, Hash, Clone, serde::Serialize, serde::Deserialize)]
 pub struct LineId(String);
 
-impl Id<'_> for LineId {
+impl LineId {
     fn new(id: &str) -> Self {
         let normalized_id = if id.starts_with("line-") {
             id.to_string()
