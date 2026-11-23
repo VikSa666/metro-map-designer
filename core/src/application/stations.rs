@@ -13,9 +13,9 @@ impl MetroMap {
         svg_coordinates: SvgPoint,
         label_svg_coordinates: Option<SvgPoint>,
     ) -> Result<(), CustomError> {
-        let station = Station::new(name, svg_coordinates, label_svg_coordinates);
+        let station = Station::new(name, label_svg_coordinates);
 
-        self.push_station(station);
+        self.push_station(svg_coordinates, station);
         Ok(())
     }
 }

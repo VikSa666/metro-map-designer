@@ -114,8 +114,8 @@ impl MetroMap {
         self.tracks().iter().find(|track| track.id() == track_id)
     }
 
-    pub fn push_station(&mut self, station: Station) {
-        let node = NetworkNode::new(Node::Station(station));
+    pub fn push_station(&mut self, svg_coordinates: SvgPoint, station: Station) {
+        let node = NetworkNode::new(Node::Station(station), svg_coordinates);
         self.nodes.push(node)
     }
 
