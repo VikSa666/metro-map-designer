@@ -3,7 +3,7 @@ use std::{
     io::{self, Write},
 };
 
-use metro_map_designer_core::{MetroMap, SvgIntPoint};
+use metro_map_designer_core::{MetroMap, SvgIntPoint, SvgOptions, draw_map};
 
 fn main() -> io::Result<()> {
     let mut args = env::args_os().skip(1);
@@ -115,6 +115,30 @@ fn main() -> io::Result<()> {
                         }
                         fs::write(&output_path, serialize(&metro_map)?)?;
                         println!("Exported metro map to {}", output_path.display());
+                    }
+                    Some("svg") => {
+                        let output_path = match parts.next() {
+                            Some(path) => path.into(),
+                            None => {
+                                let project_root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                                    .parent()
+                                    .unwrap_or_else(|| {
+                                        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                                    });
+                                project_root.join("out/json/metro-map.json")
+                            }
+                        };
+                        if let Some(parent) = output_path.parent() {
+                            fs::create_dir_all(parent)?;
+                        }
+                        let svg_options = SvgOptions {
+                            width: None,
+                            padding: None,
+                        };
+                        let svg = draw_map(&metro_map, &svg_options)
+                            .map_err(|err| io::Error::other(err))?;
+                        fs::write(&output_path, svg.svg())?;
+                        println!("Exported metro map SVG to {}", output_path.display())
                     }
                     Some(other) => println!("Error: `{other}` is not a supported format."),
                     None => println!("Usage: export --format <json> [out-path]"),
