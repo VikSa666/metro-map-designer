@@ -3,7 +3,7 @@ use std::fmt::Write;
 
 use wasm_bindgen::prelude::wasm_bindgen;
 
-use crate::domain::{Line, NetworkNode};
+use crate::domain::NetworkNode;
 use crate::{
     MetroMap,
     domain::{LineId, Track, TrackId},
@@ -13,6 +13,7 @@ use crate::{
 pub const DEFAULT_WIDTH: f32 = 2400.;
 pub const DEFAULT_PADDING: f32 = 20.;
 const TRACK_STROKE_WIDTH: f32 = 6.;
+const TRACK_LANE_SPACING: f32 = TRACK_STROKE_WIDTH * 1.1;
 
 #[wasm_bindgen]
 pub struct SvgOptions {
@@ -22,6 +23,7 @@ pub struct SvgOptions {
 }
 
 #[wasm_bindgen]
+#[allow(unused)]
 pub struct SvgMetroMap {
     svg: String,
     width: f32,
@@ -79,8 +81,16 @@ impl MetroMap {
             });
         }
 
-        let xs = self.nodes().iter().map(|node| node.x() as f32);
-        let ys = self.nodes().iter().map(|node| node.y() as f32);
+        let xs = self.nodes().iter().map(|node| node.x() as f32).chain(
+            self.tracks()
+                .iter()
+                .flat_map(|track| track.geometry().iter().map(|point| *point.x() as f32)),
+        );
+        let ys = self.nodes().iter().map(|node| node.y() as f32).chain(
+            self.tracks()
+                .iter()
+                .flat_map(|track| track.geometry().iter().map(|point| *point.y() as f32)),
+        );
 
         let Some(min_x) = xs.clone().min_by(f32::total_cmp) else {
             return Err(CustomError::SvgExportError(
@@ -202,7 +212,7 @@ impl MetroMap {
                 .ok_or_else(|| CustomError::LineIdNotFound {
                     id: line_id.to_string(),
                 })?;
-            let offset = (index as f32 - (line_ids.len() - 1) as f32 / 2.) * TRACK_STROKE_WIDTH;
+            let offset = (index as f32 - (line_ids.len() - 1) as f32 / 2.) * TRACK_LANE_SPACING;
             let lane_points = offset_polyline(&points, offset);
             let mut path = String::new();
 
@@ -407,5 +417,80 @@ mod tests {
             .map(|rest| rest.split('"').next().unwrap())
             .collect::<Vec<_>>();
         assert_ne!(path_data[0], path_data[1]);
+    }
+
+    #[test]
+    fn geometry_outside_station_bounds_is_kept_inside_the_viewport() {
+        let origin = NetworkNode::new(Node::Edge, (0, 0).into());
+        let destination = NetworkNode::new(Node::Edge, (100, 100).into());
+        let track_id = TrackId::from("track-1");
+        let route = Route::new("route-1".to_string(), None, BTreeSet::from([track_id]));
+        let metro_map = MetroMap::new(
+            "map",
+            vec![origin.clone(), destination.clone()],
+            vec![Line::new("line-a", "A", "#ff0000", vec![route])],
+            vec![Track::new(
+                "track-1",
+                origin.id().clone(),
+                destination.id().clone(),
+                vec![(50, -50).into()],
+            )],
+        );
+
+        let svg = metro_map
+            .to_svg(&SvgOptions {
+                width: Some(200.),
+                padding: Some(20.),
+            })
+            .unwrap_or_else(|error| panic!("{error}"))
+            .svg;
+
+        assert!(svg.contains("L 100 30"));
+    }
+
+    #[test]
+    fn shared_axis_aligned_tracks_have_visible_lane_spacing() {
+        let first = NetworkNode::new(Node::Edge, (0, 0).into());
+        let corner = NetworkNode::new(Node::Edge, (100, 0).into());
+        let last = NetworkNode::new(Node::Edge, (100, 100).into());
+        let track_ids = BTreeSet::from([TrackId::from("track-1"), TrackId::from("track-2")]);
+        let route = || Route::new("route-1".to_string(), None, track_ids.clone());
+        let metro_map = MetroMap::new(
+            "map",
+            vec![first.clone(), corner.clone(), last.clone()],
+            vec![
+                Line::new("line-a", "A", "#ff0000", vec![route()]),
+                Line::new("line-b", "B", "#0000ff", vec![route()]),
+            ],
+            vec![
+                Track::new("track-1", first.id().clone(), corner.id().clone(), vec![]),
+                Track::new("track-2", corner.id().clone(), last.id().clone(), vec![]),
+            ],
+        );
+
+        let svg = metro_map
+            .to_svg(&SvgOptions {
+                width: Some(200.),
+                padding: Some(20.),
+            })
+            .unwrap_or_else(|error| panic!("{error}"))
+            .svg;
+        let path_data = svg
+            .lines()
+            .filter_map(|line| line.split_once(r#" d=""#).map(|(_, rest)| rest))
+            .map(|rest| rest.split('"').next().unwrap())
+            .collect::<Vec<_>>();
+        let coordinates = |path: &str| {
+            path.split_whitespace()
+                .filter_map(|value| value.parse::<f32>().ok())
+                .collect::<Vec<_>>()
+        };
+        let horizontal_a = coordinates(path_data[0]);
+        let horizontal_b = coordinates(path_data[1]);
+        let vertical_a = coordinates(path_data[2]);
+        let vertical_b = coordinates(path_data[3]);
+
+        assert!((horizontal_a[1] - horizontal_b[1]).abs() > TRACK_STROKE_WIDTH);
+        assert!((vertical_a[2] - vertical_b[2]).abs() > TRACK_STROKE_WIDTH);
     }
 }
