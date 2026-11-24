@@ -1,10 +1,10 @@
-use crate::{domain::Station, SvgIntPoint};
+use crate::{SvgIntPoint, domain::Station};
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct NetworkNode {
     id: NetworkNodeId,
     node: Node,
-    #[serde(rename = "CamelCase")]
+    #[serde(rename(serialize = "SvgCoordinates", deserialize = "svg_coordinates"))]
     svg_coordinates: SvgIntPoint,
 }
 
@@ -19,6 +19,10 @@ impl NetworkNode {
 
     pub fn id(&self) -> &NetworkNodeId {
         &self.id
+    }
+
+    pub fn node(&self) -> &Node {
+        &self.node
     }
 
     pub fn station(&self) -> Option<&Station> {

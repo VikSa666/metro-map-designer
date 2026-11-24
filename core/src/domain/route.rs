@@ -1,7 +1,5 @@
 use std::collections::BTreeSet;
 
-use crate::domain::NetworkNodeId;
-
 use super::TrackId;
 
 /// Representing a route for a specific line. Some metros have different

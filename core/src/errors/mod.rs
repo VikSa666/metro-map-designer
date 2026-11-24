@@ -52,3 +52,9 @@ impl From<CustomError> for std::io::Error {
         Self::new(std::io::ErrorKind::Other, value.to_string())
     }
 }
+
+impl From<std::fmt::Error> for CustomError {
+    fn from(value: std::fmt::Error) -> Self {
+        Self::Custom(value.to_string())
+    }
+}

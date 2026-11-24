@@ -5,56 +5,185 @@
       "id": "node-1",
       "node": {
         "type": "station",
-        "name": "Central",
-        "svg_coordinates": {
-          "x": 100,
-          "y": 100
-        }
+        "name": "Harbor"
+      },
+      "svg_coordinates": {
+        "x": 80,
+        "y": 320
       }
     },
     {
       "id": "node-2",
       "node": {
         "type": "station",
-        "name": "Museum",
-        "svg_coordinates": {
-          "x": 200,
-          "y": 200
-        }
+        "name": "Old Town"
+      },
+      "svg_coordinates": {
+        "x": 200,
+        "y": 320
       }
     },
     {
-      "id": "station-3",
+      "id": "node-3",
       "node": {
         "type": "station",
-        "name": "Riverside",
-        "svg_coordinates": {
-          "x": 300,
-          "y": 300
-        }
+        "name": "Central"
+      },
+      "svg_coordinates": {
+        "x": 320,
+        "y": 320
       }
     },
     {
-      "id": "station-4",
+      "id": "node-4",
       "node": {
         "type": "station",
-        "name": "Airport",
-        "svg_coordinates": {
-          "x": 400,
-          "y": 400
-        }
+        "name": "Museum"
+      },
+      "svg_coordinates": {
+        "x": 440,
+        "y": 320
+      }
+    },
+    {
+      "id": "node-5",
+      "node": {
+        "type": "station",
+        "name": "University"
+      },
+      "svg_coordinates": {
+        "x": 560,
+        "y": 320
+      }
+    },
+    {
+      "id": "node-6",
+      "node": {
+        "type": "station",
+        "name": "Civic Square"
+      },
+      "svg_coordinates": {
+        "x": 320,
+        "y": 220
+      }
+    },
+    {
+      "id": "node-7",
+      "node": {
+        "type": "station",
+        "name": "North Park"
+      },
+      "svg_coordinates": {
+        "x": 320,
+        "y": 100
+      }
+    },
+    {
+      "id": "node-8",
+      "node": {
+        "type": "station",
+        "name": "Riverside"
+      },
+      "svg_coordinates": {
+        "x": 440,
+        "y": 440
+      }
+    },
+    {
+      "id": "node-9",
+      "node": {
+        "type": "station",
+        "name": "Stadium"
+      },
+      "svg_coordinates": {
+        "x": 560,
+        "y": 440
+      }
+    },
+    {
+      "id": "node-10",
+      "node": {
+        "type": "station",
+        "name": "Airport"
+      },
+      "svg_coordinates": {
+        "x": 680,
+        "y": 440
+      }
+    },
+    {
+      "id": "node-11",
+      "node": {
+        "type": "station",
+        "name": "Market"
+      },
+      "svg_coordinates": {
+        "x": 440,
+        "y": 200
+      }
+    },
+    {
+      "id": "node-12",
+      "node": {
+        "type": "station",
+        "name": "East Gardens"
+      },
+      "svg_coordinates": {
+        "x": 560,
+        "y": 200
       }
     }
   ],
   "lines": [
     {
-      "id": "line-1",
+      "id": "line-blue",
       "name": "Blue Line",
       "color": "#2563eb",
       "routes": [
         {
-          "id": "route-1",
-          "tracks": ["track-1", "track-2", "track-3"]
+          "id": "blue-main",
+          "name": "Harbor - University",
+          "tracks": [
+            "track-1",
+            "track-2",
+            "track-3",
+            "track-4"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "line-red",
+      "name": "Red Line",
+      "color": "#dc2626",
+      "routes": [
+        {
+          "id": "red-main",
+          "name": "North Park - Stadium",
+          "tracks": [
+            "track-8",
+            "track-7",
+            "track-3",
+            "track-5",
+            "track-11"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "line-green",
+      "name": "Green Line",
+      "color": "#16a34a",
+      "routes": [
+        {
+          "id": "green-main",
+          "name": "East Gardens - Airport",
+          "tracks": [
+            "track-10",
+            "track-9",
+            "track-5",
+            "track-6"
+          ]
         }
       ]
     }
@@ -62,20 +191,68 @@
   "tracks": [
     {
       "id": "track-1",
-      "origin": "station-1",
-      "destination": "station-2",
+      "origin": "node-1",
+      "destination": "node-2",
       "geometry": []
     },
     {
       "id": "track-2",
-      "origin": "station-2",
-      "destination": "station-3",
+      "origin": "node-2",
+      "destination": "node-3",
       "geometry": []
     },
     {
       "id": "track-3",
-      "origin": "station-3",
-      "destination": "station-4",
+      "origin": "node-3",
+      "destination": "node-4",
+      "geometry": []
+    },
+    {
+      "id": "track-4",
+      "origin": "node-4",
+      "destination": "node-5",
+      "geometry": []
+    },
+    {
+      "id": "track-5",
+      "origin": "node-4",
+      "destination": "node-8",
+      "geometry": []
+    },
+    {
+      "id": "track-6",
+      "origin": "node-8",
+      "destination": "node-10",
+      "geometry": []
+    },
+    {
+      "id": "track-7",
+      "origin": "node-3",
+      "destination": "node-6",
+      "geometry": []
+    },
+    {
+      "id": "track-8",
+      "origin": "node-6",
+      "destination": "node-7",
+      "geometry": []
+    },
+    {
+      "id": "track-9",
+      "origin": "node-11",
+      "destination": "node-4",
+      "geometry": []
+    },
+    {
+      "id": "track-10",
+      "origin": "node-12",
+      "destination": "node-11",
+      "geometry": []
+    },
+    {
+      "id": "track-11",
+      "origin": "node-8",
+      "destination": "node-9",
       "geometry": []
     }
   ]

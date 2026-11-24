@@ -8,10 +8,12 @@ mod track;
 pub use track::*;
 mod node;
 pub use node::*;
+use wasm_bindgen::prelude::wasm_bindgen;
 
 use crate::errors::CustomError;
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[wasm_bindgen]
 pub struct MetroMap {
     id: String,
     nodes: Vec<NetworkNode>,

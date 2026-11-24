@@ -1,5 +1,3 @@
-use crate::domain::NetworkNode;
-
 use super::Route;
 
 #[derive(PartialEq, Debug, Eq, Hash, Clone, serde::Serialize, serde::Deserialize)]
@@ -87,6 +85,10 @@ impl Line {
 
     pub fn routes(&self) -> &Vec<Route> {
         &self.routes
+    }
+
+    pub fn color(&self) -> &LineColor {
+        &self.color
     }
 
     pub fn routes_mut(&mut self) -> &mut Vec<Route> {

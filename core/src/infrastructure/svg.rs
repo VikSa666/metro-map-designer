@@ -3,18 +3,21 @@ use std::fmt::Write;
 
 use wasm_bindgen::prelude::wasm_bindgen;
 
+use crate::domain::{Line, NetworkNode};
 use crate::{
-    domain::{LineId, NetworkNodeId, Track, TrackId},
-    errors::CustomError,
     MetroMap,
+    domain::{LineId, Track, TrackId},
+    errors::CustomError,
 };
 
 pub const DEFAULT_WIDTH: f32 = 2400.;
 pub const DEFAULT_PADDING: f32 = 20.;
+const TRACK_STROKE_WIDTH: f32 = 6.;
 
+#[wasm_bindgen]
 pub struct SvgOptions {
-    width: Option<f32>,
-    padding: Option<f32>,
+    pub width: Option<f32>,
+    pub padding: Option<f32>,
     // TODO: More needed in the future
 }
 
@@ -23,6 +26,13 @@ pub struct SvgMetroMap {
     svg: String,
     width: f32,
     height: f32,
+}
+
+#[wasm_bindgen]
+impl SvgMetroMap {
+    pub fn svg(&self) -> String {
+        self.svg.to_string()
+    }
 }
 
 struct SvgViewport {
@@ -45,7 +55,7 @@ impl SvgViewport {
 }
 
 /// Replace special characters by HTML entities.
-fn escapeXml(value: &str) -> String {
+fn escape_xml(value: &str) -> String {
     value
         .replace("&", "&amp;")
         .replace("<", "&lt;")
@@ -55,13 +65,15 @@ fn escapeXml(value: &str) -> String {
 }
 
 impl MetroMap {
-    pub fn to_svg(&self, options: SvgOptions) -> Result<SvgMetroMap, CustomError> {
+    pub fn to_svg(&self, options: &SvgOptions) -> Result<SvgMetroMap, CustomError> {
         let width = options.width.unwrap_or(DEFAULT_WIDTH);
         let padding = options.padding.unwrap_or(DEFAULT_PADDING);
         // Early return if no nodes in map
         if self.nodes().is_empty() {
             return Ok(SvgMetroMap {
-                svg: format!(r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width}" />"#),
+                svg: format!(
+                    r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} 0" />"#
+                ),
                 width,
                 height: 0.,
             });
@@ -128,15 +140,16 @@ impl MetroMap {
 
         writeln!(
             svg,
-            r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {} {}""#,
+            r#"<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {} {}">"#,
             viewport.width, viewport.height
-        );
+        )?;
 
         self.draw_tracks(&mut svg, &viewport)?;
-        // TODO: self.draw_lines(&mut svg, &viewport)?;
-        // TODO: self.draw_nodes(&mut svg, &viewport)?;
+        for node in self.nodes() {
+            self.draw_node(&mut svg, &viewport, node)?;
+        }
 
-        writeln!(svg, "</svg>");
+        writeln!(svg, "</svg>")?;
         Ok(SvgMetroMap { svg, width, height })
     }
 
@@ -180,21 +193,35 @@ impl MetroMap {
 
         points.push(viewport.transform(node_to.x() as f32, node_to.y() as f32));
 
-        for (i, (x, y)) in points.into_iter().enumerate() {
-            if i == 0 {
-                write!(svg, "M {x} {y}")?;
-            } else {
-                write!(svg, " L {x} {y}")?;
+        let mut line_ids = line_ids.iter().collect::<Vec<_>>();
+        line_ids.sort_by_key(|line_id| line_id.to_string());
+
+        for (index, line_id) in line_ids.iter().enumerate() {
+            let line = self
+                .get_line(line_id)
+                .ok_or_else(|| CustomError::LineIdNotFound {
+                    id: line_id.to_string(),
+                })?;
+            let offset = (index as f32 - (line_ids.len() - 1) as f32 / 2.) * TRACK_STROKE_WIDTH;
+            let lane_points = offset_polyline(&points, offset);
+            let mut path = String::new();
+
+            for (point_index, (x, y)) in lane_points.into_iter().enumerate() {
+                if point_index == 0 {
+                    write!(path, "M {x} {y}")?;
+                } else {
+                    write!(path, " L {x} {y}")?;
+                }
             }
+
+            writeln!(
+                svg,
+                r#"<path d="{path}" fill="none" stroke="{}" stroke-width="{TRACK_STROKE_WIDTH}" stroke-linecap="round" stroke-linejoin="round" />"#,
+                escape_xml(&line.color().to_string())
+            )?;
         }
 
         Ok(())
-
-        // let path = points_to_svg_path(&points);
-        // write!(
-        //     svg,
-        //     r#"<path d="{path}" fill="none" stroke="{color}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />"#
-        // ).unwrap();
     }
 
     fn draw_tracks(&self, svg: &mut String, viewport: &SvgViewport) -> Result<(), CustomError> {
@@ -206,5 +233,179 @@ impl MetroMap {
             }
         }
         Ok(())
+    }
+
+    fn draw_node(
+        &self,
+        svg: &mut String,
+        viewport: &SvgViewport,
+        node: &NetworkNode,
+    ) -> Result<(), CustomError> {
+        if matches!(node.node(), crate::domain::Node::Edge) {
+            return Ok(());
+        }
+
+        let track_line_index = self.build_track_line_index();
+        let mut line_ids = HashSet::new();
+        for track in self.tracks() {
+            if track.origin() == node.id() || track.destination() == node.id() {
+                if let Some(lines) = track_line_index.get(track.id()) {
+                    line_ids.extend(lines.iter().copied());
+                }
+            }
+        }
+
+        if line_ids.is_empty() {
+            return Ok(());
+        }
+
+        let (x, y) = viewport.transform(node.x() as f32, node.y() as f32);
+        if line_ids.len() == 1 {
+            let line = self
+                .get_line(line_ids.iter().next().expect("one line id"))
+                .ok_or_else(|| CustomError::LineIdNotFound {
+                    id: line_ids.iter().next().expect("one line id").to_string(),
+                })?;
+            writeln!(
+                svg,
+                r#"<circle cx="{x}" cy="{y}" r="{}" fill="{}" />"#,
+                TRACK_STROKE_WIDTH * 2.,
+                escape_xml(&line.color().to_string())
+            )?;
+        } else {
+            writeln!(
+                svg,
+                r#"<circle cx="{x}" cy="{y}" r="{}" fill="white" stroke="black" stroke-width="{TRACK_STROKE_WIDTH}" />"#,
+                TRACK_STROKE_WIDTH * 2.
+            )?;
+        }
+
+        Ok(())
+    }
+}
+
+/// Returns a polyline shifted by a signed distance along its segment normals.
+///
+/// Positive offsets move points to the left of the direction of travel. At
+/// vertices, neighboring normals are combined with a bounded miter to keep the
+/// offset continuous. If the offset is zero or fewer than two points are given,
+/// the input points are returned unchanged; degenerate vertices without a usable
+/// normal are also left in place.
+fn offset_polyline(points: &[(f32, f32)], offset: f32) -> Vec<(f32, f32)> {
+    if offset == 0. || points.len() < 2 {
+        return points.to_vec();
+    }
+
+    let normals = points
+        .windows(2)
+        .map(|pair| {
+            let (dx, dy) = (pair[1].0 - pair[0].0, pair[1].1 - pair[0].1);
+            let length = dx.hypot(dy);
+            if length == 0. {
+                None
+            } else {
+                Some((-dy / length, dx / length))
+            }
+        })
+        .collect::<Vec<_>>();
+
+    points
+        .iter()
+        .enumerate()
+        .map(|(index, &(x, y))| {
+            let previous = normals[..index].iter().rev().find_map(|normal| *normal);
+            let next = normals[index..].iter().find_map(|normal| *normal);
+
+            let Some(normal) = miter_normal(previous, next) else {
+                return (x, y);
+            };
+            (x + normal.0 * offset, y + normal.1 * offset)
+        })
+        .collect()
+}
+
+/// Computes the offset direction at a polyline vertex from its neighboring normals.
+///
+/// At a corner, the normalized sum of the normals is scaled to keep the offset
+/// aligned with both segments. The scale is limited to avoid excessively long
+/// miters; at endpoints or degenerate corners, a single available normal is used.
+/// Returns `None` when neither neighboring segment has a usable normal.
+fn miter_normal(previous: Option<(f32, f32)>, next: Option<(f32, f32)>) -> Option<(f32, f32)> {
+    match (previous, next) {
+        (Some(previous), Some(next)) => {
+            let (x, y) = (previous.0 + next.0, previous.1 + next.1);
+            let length = x.hypot(y);
+            if length == 0. {
+                Some(next)
+            } else {
+                let miter = (x / length, y / length);
+                let projection = miter.0 * next.0 + miter.1 * next.1;
+                if projection.abs() < f32::EPSILON {
+                    Some(next)
+                } else {
+                    let scale = (1. / projection).clamp(-4., 4.);
+                    Some((miter.0 * scale, miter.1 * scale))
+                }
+            }
+        }
+        (Some(normal), None) | (None, Some(normal)) => Some(normal),
+        (None, None) => None,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use std::collections::BTreeSet;
+
+    use crate::domain::{Line, NetworkNode, Node, Route, Track};
+
+    use super::*;
+
+    #[test]
+    fn shared_track_is_drawn_as_separate_colored_parallel_paths() {
+        let origin = NetworkNode::new(Node::Edge, (0, 0).into());
+        let destination = NetworkNode::new(Node::Edge, (100, 100).into());
+        let track_id = TrackId::from("track-1");
+        let route = || {
+            Route::new(
+                "route-1".to_string(),
+                None,
+                BTreeSet::from([track_id.clone()]),
+            )
+        };
+        let metro_map = MetroMap::new(
+            "map",
+            vec![origin.clone(), destination.clone()],
+            vec![
+                Line::new("line-a", "A", "#ff0000", vec![route()]),
+                Line::new("line-b", "B", "#0000ff", vec![route()]),
+            ],
+            vec![Track::new(
+                "track-1",
+                origin.id().clone(),
+                destination.id().clone(),
+                vec![],
+            )],
+        );
+
+        let svg = metro_map
+            .to_svg(&SvgOptions {
+                width: Some(200.),
+                padding: Some(20.),
+            })
+            .unwrap_or_else(|error| panic!("{error}"))
+            .svg;
+
+        assert!(svg.starts_with("<svg "));
+        assert!(svg.contains("stroke=\"#ff0000\""));
+        assert!(svg.contains("stroke=\"#0000ff\""));
+        assert_eq!(svg.matches("<path ").count(), 2);
+
+        let path_data = svg
+            .lines()
+            .filter_map(|line| line.split_once(r#" d=""#).map(|(_, rest)| rest))
+            .map(|rest| rest.split('"').next().unwrap())
+            .collect::<Vec<_>>();
+        assert_ne!(path_data[0], path_data[1]);
     }
 }
