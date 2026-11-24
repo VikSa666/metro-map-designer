@@ -132,6 +132,39 @@
         "x": 560,
         "y": 200
       }
+    },
+    {
+      "id": "node-13",
+      "node": {
+        "type": "station",
+        "name": "West End"
+      },
+      "svg_coordinates": {
+        "x": 80,
+        "y": 200
+      }
+    },
+    {
+      "id": "node-14",
+      "node": {
+        "type": "station",
+        "name": "Hilltop"
+      },
+      "svg_coordinates": {
+        "x": 200,
+        "y": 100
+      }
+    },
+    {
+      "id": "node-15",
+      "node": {
+        "type": "station",
+        "name": "South Wharf"
+      },
+      "svg_coordinates": {
+        "x": 200,
+        "y": 440
+      }
     }
   ],
   "lines": [
@@ -165,7 +198,7 @@
             "track-7",
             "track-3",
             "track-5",
-            "track-11"
+            "track-6"
           ]
         }
       ]
@@ -181,6 +214,55 @@
           "tracks": [
             "track-10",
             "track-9",
+            "track-5",
+            "track-6"
+          ]
+        },
+        {
+          "id": "green-north",
+          "name": "East Gardens - North Park",
+          "tracks": [
+            "track-10",
+            "track-9",
+            "track-3",
+            "track-7",
+            "track-8"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "line-purple",
+      "name": "Purple Line",
+      "color": "#9333ea",
+      "routes": [
+        {
+          "id": "purple-main",
+          "name": "South Wharf - West End",
+          "tracks": [
+            "track-14",
+            "track-2",
+            "track-7",
+            "track-8",
+            "track-13",
+            "track-15"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "line-orange",
+      "name": "Orange Line",
+      "color": "#ea580c",
+      "routes": [
+        {
+          "id": "orange-main",
+          "name": "West End - Airport",
+          "tracks": [
+            "track-12",
+            "track-1",
+            "track-2",
+            "track-3",
             "track-5",
             "track-6"
           ]
@@ -250,10 +332,46 @@
       "geometry": []
     },
     {
-      "id": "track-11",
-      "origin": "node-8",
-      "destination": "node-9",
+      "id": "track-12",
+      "origin": "node-13",
+      "destination": "node-1",
+      "geometry": [
+        {
+          "x": 100,
+          "y": 220
+        },
+        {
+          "x": 100,
+          "y": 300
+        }
+      ]
+    },
+    {
+      "id": "track-13",
+      "origin": "node-14",
+      "destination": "node-7",
       "geometry": []
+    },
+    {
+      "id": "track-14",
+      "origin": "node-15",
+      "destination": "node-2",
+      "geometry": []
+    },
+    {
+      "id": "track-15",
+      "origin": "node-13",
+      "destination": "node-14",
+      "geometry": [
+        {
+          "x": 120,
+          "y": 200
+        },
+        {
+          "x": 200,
+          "y": 120
+        }
+      ]
     }
   ]
 }
