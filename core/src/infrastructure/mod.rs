@@ -2,6 +2,8 @@
 
 use serde_json;
 
+pub mod svg;
+
 use crate::MetroMap;
 
 pub fn serialize(map: &MetroMap) -> Result<String, serde_json::Error> {

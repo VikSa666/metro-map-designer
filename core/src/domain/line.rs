@@ -87,6 +87,10 @@ impl Line {
         &self.routes
     }
 
+    pub fn color(&self) -> &LineColor {
+        &self.color
+    }
+
     pub fn routes_mut(&mut self) -> &mut Vec<Route> {
         &mut self.routes
     }

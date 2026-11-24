@@ -3,7 +3,7 @@ use std::{
     io::{self, Write},
 };
 
-use metro_map_designer_core::{MetroMap, SvgPoint};
+use metro_map_designer_core::{MetroMap, SvgIntPoint, SvgOptions, draw_map};
 
 fn main() -> io::Result<()> {
     let mut args = env::args_os().skip(1);
@@ -116,6 +116,30 @@ fn main() -> io::Result<()> {
                         fs::write(&output_path, serialize(&metro_map)?)?;
                         println!("Exported metro map to {}", output_path.display());
                     }
+                    Some("svg") => {
+                        let output_path = match parts.next() {
+                            Some(path) => path.into(),
+                            None => {
+                                let project_root = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                                    .parent()
+                                    .unwrap_or_else(|| {
+                                        std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+                                    });
+                                project_root.join("out/json/metro-map.json")
+                            }
+                        };
+                        if let Some(parent) = output_path.parent() {
+                            fs::create_dir_all(parent)?;
+                        }
+                        let svg_options = SvgOptions {
+                            width: None,
+                            padding: None,
+                        };
+                        let svg = draw_map(&metro_map, &svg_options)
+                            .map_err(|err| io::Error::other(err))?;
+                        fs::write(&output_path, svg.svg())?;
+                        println!("Exported metro map SVG to {}", output_path.display())
+                    }
                     Some(other) => println!("Error: `{other}` is not a supported format."),
                     None => println!("Usage: export --format <json> [out-path]"),
                 },
@@ -134,9 +158,9 @@ fn main() -> io::Result<()> {
 }
 
 fn add_station(metro_map: &mut MetroMap, name: &str, svg_x: &str, svg_y: &str) -> io::Result<()> {
-    let x = str::parse::<f32>(svg_x).map_err(|err| io::Error::other(err))?;
-    let y = str::parse::<f32>(svg_y).map_err(|err| io::Error::other(err))?;
-    metro_map.create_station(name, SvgPoint::from((x, y)), None)?;
+    let x = str::parse::<i32>(svg_x).map_err(|err| io::Error::other(err))?;
+    let y = str::parse::<i32>(svg_y).map_err(|err| io::Error::other(err))?;
+    metro_map.create_station(name, SvgIntPoint::from((x, y)), None)?;
     println!("Successfully created station '{name}'.");
     Ok(())
 }
