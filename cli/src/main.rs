@@ -3,7 +3,7 @@ use std::{
     io::{self, Write},
 };
 
-use metro_map_designer_core::{MetroMap, SvgPoint};
+use metro_map_designer_core::{MetroMap, SvgIntPoint};
 
 fn main() -> io::Result<()> {
     let mut args = env::args_os().skip(1);
@@ -134,9 +134,9 @@ fn main() -> io::Result<()> {
 }
 
 fn add_station(metro_map: &mut MetroMap, name: &str, svg_x: &str, svg_y: &str) -> io::Result<()> {
-    let x = str::parse::<f32>(svg_x).map_err(|err| io::Error::other(err))?;
-    let y = str::parse::<f32>(svg_y).map_err(|err| io::Error::other(err))?;
-    metro_map.create_station(name, SvgPoint::from((x, y)), None)?;
+    let x = str::parse::<i32>(svg_x).map_err(|err| io::Error::other(err))?;
+    let y = str::parse::<i32>(svg_y).map_err(|err| io::Error::other(err))?;
+    metro_map.create_station(name, SvgIntPoint::from((x, y)), None)?;
     println!("Successfully created station '{name}'.");
     Ok(())
 }

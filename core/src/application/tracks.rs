@@ -1,7 +1,7 @@
 use crate::{
     domain::{MetroMap, NetworkNodeId, Track},
     errors::CustomError,
-    SvgPoint,
+    SvgIntPoint,
 };
 
 impl MetroMap {
@@ -10,7 +10,7 @@ impl MetroMap {
         id: &str,
         origin: &str,
         destination: &str,
-        geometry: Vec<SvgPoint>,
+        geometry: Vec<SvgIntPoint>,
     ) -> Result<(), CustomError> {
         let origin_node_id = NetworkNodeId::from(origin);
         if !self.node_exists(&origin_node_id) {

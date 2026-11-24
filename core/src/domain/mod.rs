@@ -9,6 +9,8 @@ pub use track::*;
 mod node;
 pub use node::*;
 
+use crate::errors::CustomError;
+
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct MetroMap {
     id: String,
@@ -42,6 +44,21 @@ impl MetroMap {
 
     pub fn node_exists(&self, node_id: &NetworkNodeId) -> bool {
         self.nodes().iter().any(|node| node.id() == node_id)
+    }
+
+    pub fn node_by_id(&self, node_id: &NetworkNodeId) -> Result<&NetworkNode, CustomError> {
+        let mut node = self.nodes().iter().filter(|node| node.id() == node_id);
+        let Some(value) = node.next() else {
+            return Err(CustomError::NodeIdNotFound {
+                id: node_id.to_string(),
+            });
+        };
+        if node.next().is_some() {
+            return Err(CustomError::Custom(format!(
+                "Id {node_id} is present more than once in map."
+            )));
+        }
+        Ok(value)
     }
 
     pub fn stations(&self) -> Vec<&Station> {
@@ -114,7 +131,7 @@ impl MetroMap {
         self.tracks().iter().find(|track| track.id() == track_id)
     }
 
-    pub fn push_station(&mut self, svg_coordinates: SvgPoint, station: Station) {
+    pub fn push_station(&mut self, svg_coordinates: SvgIntPoint, station: Station) {
         let node = NetworkNode::new(Node::Station(station), svg_coordinates);
         self.nodes.push(node)
     }
@@ -129,19 +146,27 @@ impl MetroMap {
 }
 
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
-pub struct SvgPoint {
-    x: f32,
-    y: f32,
+pub struct SvgIntPoint {
+    x: i32,
+    y: i32,
 }
 
-impl SvgPoint {
-    pub fn new(x: f32, y: f32) -> Self {
+impl SvgIntPoint {
+    pub fn new(x: i32, y: i32) -> Self {
         Self { x, y }
+    }
+
+    pub fn x(&self) -> &i32 {
+        &self.x
+    }
+
+    pub fn y(&self) -> &i32 {
+        &self.y
     }
 }
 
-impl From<(f32, f32)> for SvgPoint {
-    fn from(value: (f32, f32)) -> Self {
+impl From<(i32, i32)> for SvgIntPoint {
+    fn from(value: (i32, i32)) -> Self {
         Self {
             x: value.0,
             y: value.1,

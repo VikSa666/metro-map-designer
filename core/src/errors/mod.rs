@@ -6,6 +6,7 @@ pub enum CustomError {
     RouteIdNotFound { line_id: String, route_id: String },
     RouteCreationFailed { custom: String },
     TrackConnectionFailed,
+    SvgExportError(String),
     Custom(String),
 }
 
@@ -29,6 +30,9 @@ impl std::fmt::Display for CustomError {
                     f,
                     "Route with id `{route_id}` not found in line `{line_id}`"
                 )
+            }
+            CustomError::SvgExportError(s) => {
+                write!(f, "Error exporting to SVG. Reason: ${s}.")
             }
             CustomError::RouteCreationFailed { custom } => {
                 write!(

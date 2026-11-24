@@ -1,9 +1,9 @@
 use std::collections::{BTreeSet, HashMap};
 
 use crate::{
-    MetroMap,
     domain::{LineId, NetworkNodeId, Route, Track, TrackId},
     errors::CustomError,
+    MetroMap,
 };
 
 impl MetroMap {

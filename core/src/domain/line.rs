@@ -1,3 +1,5 @@
+use crate::domain::NetworkNode;
+
 use super::Route;
 
 #[derive(PartialEq, Debug, Eq, Hash, Clone, serde::Serialize, serde::Deserialize)]

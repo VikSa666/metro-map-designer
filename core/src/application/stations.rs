@@ -1,5 +1,5 @@
 use crate::{
-    domain::{MetroMap, Station, SvgPoint},
+    domain::{MetroMap, Station, SvgIntPoint},
     errors::CustomError,
 };
 
@@ -10,8 +10,8 @@ impl MetroMap {
     pub fn create_station(
         self: &mut MetroMap,
         name: &str,
-        svg_coordinates: SvgPoint,
-        label_svg_coordinates: Option<SvgPoint>,
+        svg_coordinates: SvgIntPoint,
+        label_svg_coordinates: Option<SvgIntPoint>,
     ) -> Result<(), CustomError> {
         let station = Station::new(name, label_svg_coordinates);
 

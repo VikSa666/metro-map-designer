@@ -1,4 +1,4 @@
-use crate::SvgPoint;
+use crate::SvgIntPoint;
 
 use super::NetworkNodeId;
 
@@ -43,7 +43,7 @@ pub struct Track {
     id: TrackId,
     origin: NetworkNodeId,
     destination: NetworkNodeId,
-    geometry: Vec<SvgPoint>,
+    geometry: Vec<SvgIntPoint>,
 }
 
 impl Track {
@@ -51,7 +51,7 @@ impl Track {
         id: &str,
         origin: NetworkNodeId,
         destination: NetworkNodeId,
-        geometry: Vec<SvgPoint>,
+        geometry: Vec<SvgIntPoint>,
     ) -> Self {
         Self {
             id: TrackId::new(id),
@@ -71,5 +71,9 @@ impl Track {
 
     pub fn destination(&self) -> &NetworkNodeId {
         &self.destination
+    }
+
+    pub fn geometry(&self) -> &Vec<SvgIntPoint> {
+        &self.geometry
     }
 }
